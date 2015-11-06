@@ -2927,7 +2927,7 @@ class API(base.Base):
                 connect_info['host'], connect_info['port'],
                 connect_info['internal_access_path'], instance.uuid,
                 access_url=connect_info['access_url'])
-
+        LOG.warn(_LW("RAD nova/compute/api.py get_spice_connect"))
         return {'url': connect_info['access_url']}
 
     @check_instance_host
@@ -2935,6 +2935,7 @@ class API(base.Base):
         """Used in a child cell to get console info."""
         connect_info = self.compute_rpcapi.get_spice_console(context,
                 instance=instance, console_type=console_type)
+        LOG.warn(_LW("RAD nova/compute/api.py get_spice_connect_info"))
         return connect_info
 
     @wrap_check_policy

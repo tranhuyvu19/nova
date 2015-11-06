@@ -2594,8 +2594,8 @@ class LibvirtDriver(driver.ComputeDriver):
 
         ports = get_spice_ports_for_instance(instance.name)
         host = CONF.spice.server_proxyclient_address
-        LOG.warn("RAD : %s " % ports)
-        LOG.warn("RAD : %s " % host)
+        LOG.warn(_LW("RAD %s"),ports)
+        LOG.warn(_LW("RAD %s"),host)
         return ctype.ConsoleSpice(host=host, port=ports[0], tlsPort=ports[1])
 
     def get_serial_console(self, context, instance):
