@@ -2927,8 +2927,28 @@ class API(base.Base):
                 connect_info['host'], connect_info['port'],
                 connect_info['internal_access_path'], instance.uuid,
                 access_url=connect_info['access_url'])
-        LOG.warn(_LW("RAD nova/compute/api.py get_spice_connect"))
+        LOG.warn(_LW("RAD nova/compute/api.py get_spice_consolet"))
+        LOG.warn(_LW("RAD %s"), connect_info['host'])
+        LOG.warn(_LW("RAD %s"), connect_info['port'])
+
         return {'url': connect_info['access_url']}
+
+
+    @wrap_check_policy
+    @check_instance_host
+    def get_connection_info_rad(self, context, instance, console_type):
+        """Get a url to an instance Console."""
+        connect_info = self.compute_rpcapi.get_spice_console(context,
+                instance=instance, console_type=console_type)
+        self.consoleauth_rpcapi.authorize_console(context,
+                connect_info['token'], console_type,
+                connect_info['host'], connect_info['port'],
+                connect_info['internal_access_path'], instance.uuid,
+                access_url=connect_info['access_url'])
+        LOG.warn(_LW("RAD nova/compute/api.py get_spice_consolet"))
+        LOG.warn(_LW("RAD %s"), connect_info['host'])
+        LOG.warn(_LW("RAD %s"), connect_info['port'])
+        return connect_info
 
     @check_instance_host
     def get_spice_connect_info(self, context, instance, console_type):

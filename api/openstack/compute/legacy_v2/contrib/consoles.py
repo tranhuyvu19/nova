@@ -86,6 +86,10 @@ class ConsolesController(wsgi.Controller):
 
         return {'console': {'type': console_type, 'url': output['url']}}
 
+    @wsgi.action('test-rad')
+    def get_test_rad(self, req, id, body):
+        return {'console': 'rad'}
+
     @wsgi.action('os-getRDPConsole')
     def get_rdp_console(self, req, id, body):
         """Get text console output."""
