@@ -98,7 +98,7 @@ class RemoteConsolesController(wsgi.Controller):
 
     @wsgi.Controller.api_version("2.1", "2.5")
     @extensions.expected_errors((400, 404, 409, 501))
-    @wsgi.action('getSPICEconnection')
+    @wsgi.action('os-getSPICEconnection')
     def get_test_rad(self, req, id, body):
         """Get text console output."""
         context = req.environ['nova.context']
