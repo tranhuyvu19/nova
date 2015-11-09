@@ -88,7 +88,29 @@ class ConsolesController(wsgi.Controller):
 
     @wsgi.action('test-rad')
     def get_test_rad(self, req, id, body):
-        return {'console': 'rad'}
+        """Get text console output."""
+        context = req.environ['nova.context']
+        authorize(context)
+
+        # If type is not supplied or unknown, get_spice_console below will cope
+        console_type = body['os-getSPICEConsole'].get('type')
+
+        try:
+            instance = common.get_instance(self.compute_api, context, id)
+            connection_info = self.compute_api.get_connection_info_rad(context,
+                                                        instance,
+                                                        console_type)
+        except exception.ConsoleTypeUnavailable as e:
+            raise webob.exc.HTTPBadRequest(explanation=e.format_message())
+        except (exception.InstanceUnknownCell,
+                     exception.InstanceNotFound) as e:
+            raise webob.exc.HTTPNotFound(explanation=e.format_message())
+        except exception.InstanceNotReady as e:
+            raise webob.exc.HTTPConflict(explanation=e.format_message())
+        except NotImplementedError:
+            common.raise_feature_not_supported()
+
+        return {'connection_info': connection_info}
 
     @wsgi.action('os-getRDPConsole')
     def get_rdp_console(self, req, id, body):
