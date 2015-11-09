@@ -86,14 +86,14 @@ class ConsolesController(wsgi.Controller):
 
         return {'console': {'type': console_type, 'url': output['url']}}
 
-    @wsgi.action('test-rad')
+    @wsgi.action('os-getSPICEconnection')
     def get_test_rad(self, req, id, body):
         """Get text console output."""
         context = req.environ['nova.context']
         authorize(context)
 
         # If type is not supplied or unknown, get_spice_console below will cope
-        console_type = body['os-getSPICEConsole'].get('type')
+        console_type = body['getSPICEconnection'].get('type')
 
         try:
             instance = common.get_instance(self.compute_api, context, id)
@@ -110,7 +110,7 @@ class ConsolesController(wsgi.Controller):
         except NotImplementedError:
             common.raise_feature_not_supported()
 
-        return {'connection_info': connection_info}
+        return {'connection_info': {'host': connection_info['host'], 'port': connection_info['port']}}
 
     @wsgi.action('os-getRDPConsole')
     def get_rdp_console(self, req, id, body):
