@@ -105,7 +105,7 @@ class RemoteConsolesController(wsgi.Controller):
         authorize(context)
 
         # If type is not supplied or unknown, get_spice_console below will cope
-        console_type = body['getSPICEconnection'].get('type')
+        console_type = body['os-getSPICEconnection'].get('type')
 
         try:
             instance = common.get_instance(self.compute_api, context, id)
