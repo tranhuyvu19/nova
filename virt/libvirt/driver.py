@@ -4233,7 +4233,7 @@ class LibvirtDriver(driver.ComputeDriver):
 #            guest.add_device(video)
 
             sound = vconfig.LibvirtConfigGuestSound()
-            sound.model = "ich6"
+            sound.model = "ac97"
             sound.address_type = "pci"
             sound.address_domain = "0x0000"
             sound.address_bus = "0x00"
